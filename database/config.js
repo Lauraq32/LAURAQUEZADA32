@@ -1,22 +1,15 @@
 const mongoose = require('mongoose');
 const dbConnection = async() => {
-
     try {
-
-        await mongoose.connect( process.env.MONGODB_CNN, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            
-        });
-    
-        console.log('Data Base Connected');
-
+        await mongoose.connect(
+            'MONGODB_CNN=mongodb+srv://lauraquezada:Macoris@cluster0.ojcll.mongodb.net/starwars',
+            { useNewUrlParser: true },
+            () => console.log('Data Base Connected')
+        );
     } catch (error) {
         console.log(error);
         throw new Error('Data Base presented an error!');
     }
-
-
 }
 module.exports = {
     dbConnection

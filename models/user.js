@@ -1,6 +1,4 @@
-
 const { Schema, model } = require('mongoose');
-
 const UserSchema = Schema({
     name: {
         type: String,
@@ -19,7 +17,7 @@ const UserSchema = Schema({
         type: String,
     },
     quote: {
-        type: String,  
+        type: String,
     },
 });
 
