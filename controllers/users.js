@@ -20,9 +20,6 @@ const User = require('../models/user');
         })
     };
     const usersPost =  async (req, res ) => {
-        const { name, email, password } = req.body;
-        const user = new User({ name, email, password });
-
         const response = await axios({
             url: "https://api.unsplash.com/photos/random?client_id=6TQYDX1LX0NrxnMkPc-hIrnqEoqHdOMZ-07rd1WcroY",
             method: "get",
