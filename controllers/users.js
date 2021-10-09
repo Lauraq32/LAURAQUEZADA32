@@ -3,7 +3,6 @@ const user = require('../models/user');
 const axios = require('axios');
 const https = require('https');
 const User = require('../models/user');
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     const usersGet = async(req = request, res = response) => {
         const id = req.params.id;
@@ -21,38 +20,36 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
         })
     };
     const usersPost =  async (req, res ) => {
+        const { name, email, password } = req.body;
+        const user = new User({ name, email, password });
+
         const response = await axios({
             url: "https://api.unsplash.com/photos/random?client_id=6TQYDX1LX0NrxnMkPc-hIrnqEoqHdOMZ-07rd1WcroY",
             method: "get",
         });
-        const response2 = await axios({
-            url: "https://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote",
-            method: "get"
-        });
-        httpsAgent: new https.Agent({
-            rejectUnauthorized: false
-        })
-        console.log(response2.data)
-        console.log(response.data)
+        const response2 = await axios.get('https://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote',
+            {
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false
+                })
+            });
         const users = new User({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
             img: response.data.urls.full,
-            quote: response2.data.urls,
+            quote: response2.data.content
         });
         users
             .save()
             .then(result => {
                 console.log(result);
                 res.status(201).json({
-                    NewUser: {
                         name: result.name,
                         email: result.email,
                         password: result.password,
                         img: result.img,
                         quote: result.quote,
-                    }
                 });
             })
         .catch(err => {
@@ -76,21 +73,20 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
                 });
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
                 res.status(400).json({
                     error: err
                 });
 
             });
     }
-    const usersDelete = async(req, res = response) => {
 
+    const usersDelete = async(req, res = response) => {
         const { id } = req.params;
         const user = await User.findByIdAndDelete( id, { status: false } );
         res.status(200).json({
             message: 'user deleted',
         });
-
     }
 module.exports = {
     usersGet,
