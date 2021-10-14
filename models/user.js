@@ -13,6 +13,10 @@ const UserSchema = Schema({
         type: String,
         required: [true, 'the password is mandatory'],
     },
+    status: {
+        type: Boolean,
+        default: true
+    },
     img: {
         type: String,
     },
@@ -21,4 +25,10 @@ const UserSchema = Schema({
     },
 });
 
-module.exports = model( 'User', UserSchema );
+UserSchema.methods.toJSON = function() {
+    const { __v, password, _id, ...user  } = this.toObject();
+    user.uid = _id;
+    return user;
+}
+
+module.exports = model('User', UserSchema);
