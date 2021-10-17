@@ -1,6 +1,7 @@
 const { response } = require('express');
 const User = require('../models/user');
 const { getJWT } = require('../helpers/generate-jwt');
+const crypto = require("crypto");
 
 
 const login = async(req, res = response) => {
@@ -18,6 +19,18 @@ const login = async(req, res = response) => {
                 msg: 'this email is not activated'
             });
         }
+
+        const secret = "thisIsMyPublicKey23";
+        const sha256Hasher = crypto.createHmac("sha256", secret);
+        const hash = sha256Hasher.update(req.body.password).digest("hex");
+
+        const validPassword = hash === user.password;
+        if ( !validPassword ) {
+            return res.status(400).json({
+                msg: 'password is not valid'
+            });
+        }
+
         const token = await getJWT( user.id );
 
         res.json({

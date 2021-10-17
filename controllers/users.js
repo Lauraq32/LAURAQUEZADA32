@@ -33,10 +33,9 @@ const usersPost =  async (req, res ) => {
         })
     });
 
-    const str = "password";
-    const secret = "This is a company secret";
+    const secret = "thisIsMyPublicKey23";
     const sha256Hasher = crypto.createHmac("sha256", secret);
-    const hash = sha256Hasher.update(str).digest("hex");
+    const hash = sha256Hasher.update(req.body.password).digest("hex");
 
     const users = new User({
         name: req.body.name,
