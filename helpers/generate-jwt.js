@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 const express = require('express');
-const {config} = require("dotenv");
+const {SECRETORPRIVATEKEY} = require('../config');
 
 const getJWT = ( uid = '' ) => {
 
     return new Promise( (resolve, reject) => {
         const payload = { uid };
-        jwt.sign( payload, 'SECRET', {
+        jwt.sign( payload, SECRETORPRIVATEKEY, {
             expiresIn: '6h'
         }, ( err, token ) => {
 

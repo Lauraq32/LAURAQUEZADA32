@@ -4,6 +4,7 @@ const axios = require('axios');
 const https = require('https');
 const User = require('../models/user');
 const crypto = require("crypto");
+const {SECRETORPRIVATEKEY} = require('../config');
 
 const usersGet = async(req = request, res = response) => {
     const id = req.params.id;
@@ -33,8 +34,7 @@ const usersPost =  async (req, res ) => {
         })
     });
 
-    const secret = "thisIsMyPublicKey23";
-    const sha256Hasher = crypto.createHmac("sha256", secret);
+    const sha256Hasher = crypto.createHmac("sha256", SECRETORPRIVATEKEY);
     const hash = sha256Hasher.update(req.body.password).digest("hex");
 
     const users = new User({

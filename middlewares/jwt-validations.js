@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const {response, request} = require("express");
-const {config} = require("dotenv");
+const {SECRETORPRIVATEKEY} = require('../config');
 
 const jwtValidations = ( req = request, res = response, next ) => {
-    const token = req.header('x-token');
+    const token = req.header('Authorization');
 
     if ( !token ) {
         return res.status(401).json({
@@ -11,7 +11,7 @@ const jwtValidations = ( req = request, res = response, next ) => {
         });
     }
     try {
-         const payload = jwt.verify( token, 'SECRET' );
+         const payload = jwt.verify( token, SECRETORPRIVATEKEY );
          console.log(payload);
              next();
     } catch (error) {

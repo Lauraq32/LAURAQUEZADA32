@@ -2,35 +2,26 @@ const { response } = require('express');
 const User = require('../models/user');
 const { getJWT } = require('../helpers/generate-jwt');
 const crypto = require("crypto");
-
+const {SECRETORPRIVATEKEY} = require('../config');
 
 const login = async(req, res = response) => {
-    const {email}  = req.body;
+    const { email, password }  = req.body;
 
     try {
-        const user = await User.findOne({ email });
-        if ( !user ) {
-            return res.status(400).json({
-                msg: 'the email is not registered'
+        const sha256Hasher = crypto.createHmac("sha256", SECRETORPRIVATEKEY);
+        const hash = sha256Hasher.update(password).digest("hex");
+
+        const user = await User.findOne({ email, password: hash });
+        if (!user) {
+            return res.status(401).json({
+                msg: 'Invalid credentials'
             });
         }
-        if ( !user.status ) {
-            return res.status(400).json({
+        if (!user.status) {
+            return res.status(401).json({
                 msg: 'this email is not activated'
             });
         }
-
-        const secret = "thisIsMyPublicKey23";
-        const sha256Hasher = crypto.createHmac("sha256", secret);
-        const hash = sha256Hasher.update(req.body.password).digest("hex");
-
-        const validPassword = hash === user.password;
-        if ( !validPassword ) {
-            return res.status(400).json({
-                msg: 'password is not valid'
-            });
-        }
-
         const token = await getJWT( user.id );
 
         res.json({

@@ -7,14 +7,14 @@ const emailExists = async( email = '' ) => {
     }
 }
 
-const userExists= async( id = '' ) => {
-    const Userexists = await User.findById(id);
-    if (!Userexists) {
+const user = async( id = '' ) => {
+    const userExists = await User.findById(id);
+    if (!userExists) {
         throw new Error(`id doesnt exists ${ id }`);
     }
 }
 
 module.exports = {
     emailExists,
-    userExists,
+    user
 }
