@@ -3,12 +3,10 @@ const { check } = require('express-validator');
 
 const { usersGet,
         usersPut,
-        usersPost,
         usersDelete } = require('../controllers/users');
 const { validations } = require("../middlewares/validations");
-const { emailExists, userExists } = require("../helpers/dbValidators");
+const { userExists } = require("../helpers/dbValidators");
 const {jwtValidations} = require("../middlewares/jwt-validations");
-
 
 const router = Router();
 
@@ -24,14 +22,6 @@ router.put('/:id',[
     check('id').custom(userExists),
     validations
 ], usersPut);
-
-router.post("/",[
-    check('name', 'name is required').not().isEmpty(),
-    check('email', 'email is not valid').isEmail(),
-    check('password', 'the password needs to have more than 4 letters').isLength({ min: 4 }),
-    check('email').custom(emailExists),
-    validations
-], usersPost);
 
 router.delete('/:id', [
     jwtValidations,
