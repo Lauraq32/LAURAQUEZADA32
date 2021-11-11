@@ -3,16 +3,22 @@
   "main": "app.js",
   "dependencies": {
     "@babel/helper-validator-identifier": "^7.15.7",
+    "@sendgrid/mail": "^7.6.0",
     "axios": "^0.22.0",
     "bcryptjs": "^2.4.3",
     "check": "^1.0.0",
     "cors": "^2.8.5",
+    "cron": "^1.8.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
     "jsonwebtoken": "^8.5.1",
+    "moment-timezone": "^0.5.34",
     "mongoose": "^6.0.8",
-    "role-model": "^2.0.0"
+    "node-cron": "^3.0.0",
+    "node-schedule": "^2.0.0",
+    "role-model": "^2.0.0",
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
     "validator": "^13.6.0"

@@ -8,7 +8,7 @@ class Server {
         this.app  = express();
         this.usersPath = '/api/users';
         this.authPath = '/api/auth';
-
+        
         this.DataBase();
         this.middlewares();
         this.routes();
