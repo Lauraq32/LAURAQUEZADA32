@@ -8,6 +8,7 @@ class Server {
         this.app  = express();
         this.usersPath = '/api/users';
         this.authPath = '/api/auth';
+        this.reservationPath = '/api/reservation';
         
         this.DataBase();
         this.middlewares();
@@ -27,6 +28,7 @@ class Server {
     routes() {
         this.app.use( this.authPath, require('../routes/auth'));
         this.app.use( this.usersPath, require('../routes/users'));
+        this.app.use( this.reservationPath, require('../routes/reservation'));
     }
 
     listen() {
