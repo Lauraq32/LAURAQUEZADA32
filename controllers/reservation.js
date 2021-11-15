@@ -18,7 +18,7 @@ const reservationPost = async (req, res ) => {
             startTime: req.body.startTime,
             endTime: req.body.endTime
         });
-        cron.schedule('1 0 2 11 November Thu', () => {
+        cron.schedule('1 25 12 11 November Thu', () => {
             const message = {
                 to: req.body.email,
                 from: 'lauraq2348@gmail.com',
@@ -55,7 +55,7 @@ const reservationGet = async(req = request, res = response) => {
             console.log("from database", doc);
             if (doc) {
                 res.status(200).json({
-                    user: doc,
+                    reservation: doc,
                 });
             } else {
                 res.status(404).json({message: "reservation not found"});
