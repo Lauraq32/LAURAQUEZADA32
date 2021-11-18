@@ -18,7 +18,7 @@ const reservationPost = async (req, res ) => {
             startTime: req.body.startTime,
             endTime: req.body.endTime
         });
-        cron.schedule('1 25 12 11 November Thu', () => {
+        cron.schedule('1 52 4 18 November Thu', () => {
             const message = {
                 to: req.body.email,
                 from: 'lauraq2348@gmail.com',
