@@ -1,9 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const {validations} = require("../middlewares/validations");
-const {emailExists, ReservationExists, productExists, reservationTimeExists} = require("../helpers/dbValidators");
+const {emailExists} = require("../helpers/dbValidators");
 const {usersPost, Login} = require("../controllers/users");
-const {reservationPost} = require("../controllers/reservation");
 
 const router = Router();
 
@@ -20,16 +19,6 @@ router.post("/createUser",[
   check('email').custom(emailExists),
   validations
 ], usersPost);
-
-router.post('/reservation', [
-  check('email', 'email is required').isEmail(),
-  check('startTime', 'valid startTime is required').not().isEmpty(),
-  check('endTime', 'valid endTime is required').not().isEmpty(),
-  check('email').custom(ReservationExists),
-  check('product').custom(productExists),
-  check('startTime').custom(reservationTimeExists),
-  validations
-], reservationPost);
 
 module.exports = router;
 
