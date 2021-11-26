@@ -5,9 +5,6 @@ const ReservationSchema = Schema({
         required: [true, 'email is required'],
         unique: true
     },
-    product: {
-        type: String,
-    },
     startTime: {
         type: String,
         required: [true, 'valid startTime is required']
