@@ -1,23 +1,24 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
+
 const { reservationGet,
         reservationPost,
         reservationPut,
         reservationDelete } = require('../controllers/reservation');
 const {jwtValidations} = require("../middlewares/jwt-validations");
 const { validations } = require("../middlewares/validations");
-const { reservationExists, ReservationExists, productExists, reservationTimeExists } = require("../helpers/dbValidators");
+const { reservationExists, Emailcheck, reservationTimeExists, checkendTime } = require("../helpers/dbValidators");
 
 const router = Router();
 
-router.post('/reservation', [
+router.post('/create', [
     check('email', 'email is required').isEmail(),
     check('startTime', 'valid startTime is required').not().isEmpty(),
     check('endTime', 'valid endTime is required').not().isEmpty(),
-    check('email').custom(ReservationExists),
-    check('product').custom(productExists),
+    check('email').custom(Emailcheck),
     check('startTime').custom(reservationTimeExists),
+    check('endTime').custom(checkendTime),
     validations
   ], reservationPost);
 
