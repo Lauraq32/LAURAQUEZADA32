@@ -22,19 +22,12 @@ const reservationExists = async( id = '' ) => {
     }
 }
 
-const ReservationExists = async( email = '' ) => {
-    const reservationEmail = await Reservation.findOne({ email });
-    if (reservationEmail) {
-        throw new Error(`${ email }, is already registered`);
+const Emailcheck = async( email = '' ) => {
+     const reservationEmail = await Reservation.findOne({ email });
+     if (reservationEmail) {
+         throw new Error(`${ email }, is already registered`);
     }
-}
-
-const productExists = async( product = '' ) => {
-    const productExists = await Reservation.findOne({ product });
-    if (productExists) {
-        throw new Error(`${ product }, is reserved at this time, please select another time`);
-    }
-}
+ }
 
 const reservationTimeExists = async( startTime = '' ) => {
     const startTimeExists = await Reservation.findOne({ startTime });
@@ -43,11 +36,18 @@ const reservationTimeExists = async( startTime = '' ) => {
     }
 }
 
+const checkendTime = async( endTime = '' ) => {
+    const endTimeExists = await Reservation.findOne({ endTime });
+    if (endTimeExists) {
+        throw new Error(`${ endTime }, this time slot is almost over, please try another time`);
+    }
+}
+
 module.exports = {
     emailExists,
     user,
     reservationExists,
-    ReservationExists,
-    productExists,
-    reservationTimeExists
+    Emailcheck,
+    reservationTimeExists,
+    checkendTime
 }
