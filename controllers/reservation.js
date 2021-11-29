@@ -5,25 +5,28 @@ const schedule = require("node-schedule");
 const moment = require("moment");
 
 const reservationPost = async (req, res) => {
+  const startTime = moment(req.body.startTime).add(4, "hours").toDate();
+  const endTime = moment(req.body.endTime).add(4, "hours").toDate();
+
   console.log(
-    `startTime: ${moment(req.body.startTime).toDate()} 
-    endTime: ${moment(req.body.endTime).toDate()}`
+    `startTime: ${moment(startTime).toDate()} 
+    endTime: ${moment(endTime).toDate()}`
   );
 
   const reservations = new Reservation({
     email: req.body.email,
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
+    startTime: startTime,
+    endTime: endTime,
   });
   reservations
     .save()
     .then(async (result) => {
-      const date = moment(req.body.startTime).subtract(1, "hour").toDate();
+      const date = moment(startTime).subtract(1, "hour").toDate();
       console.log(`scheduled date: ${date}`);
       console.log(`current date: ${moment().toDate()}`);
 
       const duration = moment.duration(
-        moment(req.body.startTime).diff(moment())
+        moment(startTime).diff(moment())
       );
       const difference = duration.asMinutes();
 
@@ -43,8 +46,8 @@ const reservationPost = async (req, res) => {
       }
       res.status(201).json({
         email: result.email,
-        startTime: req.body.startTime,
-        endTime: req.body.endTime,
+        startTime: startTime,
+        endTime: endTime,
       });
     })
     .catch((err) => {
@@ -54,7 +57,6 @@ const reservationPost = async (req, res) => {
       });
     });
 };
-
 const sendEmail = async (message) => {
   try {
     await sgMAIL.send(message);
@@ -95,6 +97,7 @@ const reservationPut = async (req, res = response) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
   };
+  
 
   Reservation.updateOne({ _id: id }, { $set: updateOps })
     .exec()
@@ -115,5 +118,4 @@ module.exports = {
   reservationGet,
   reservationPut,
   reservationDelete,
-  reservationGet
 };
