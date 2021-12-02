@@ -41,9 +41,7 @@ const reservationPost = async (req, res) => {
         schedule.scheduleJob(date, async () => {
           await sendEmail(message);
         });
-      } else if (difference >= 0 && difference <= 60) {
-        await sendEmail(message);
-      }
+      } 
       res.status(201).json({
         email: result.email,
         startTime: startTime,
@@ -97,8 +95,8 @@ const reservationPut = async (req, res = response) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
   };
-  
 
+  
   Reservation.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then((result) => {
